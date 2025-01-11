@@ -12,7 +12,7 @@ const App = () => {
     
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/video/:videoId" element={<VideoPlayer />} /> {/* Video player page */}
+        <Route path="/video" element={<VideoPlayer />} /> {/* Video player page */}
         <Route path="/login" element={<Login />} />
         <Route path="/upload" element={<UploadToYoutube />} />
         {/* <Route path="/profile" element={<ProfilePage />} />

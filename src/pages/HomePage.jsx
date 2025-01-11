@@ -1,21 +1,32 @@
 // src/pages/HomePage.jsx
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { createClient } from '@supabase/supabase-js';
+
+// Replace with your own Supabase URL and Key
+const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const HomePage = () => {
   const [showSignOut, setShowSignOut] = useState(false);
   const categories = ['Tech', 'Finance', 'Electronics', 'Marketing'];
+  const [lessons, setLessons] = useState([]);
+  useEffect(() => {
+    const fetchLessons = async () => {
+      const { data, error } = await supabase
+        .from('lessons')
+        .select('*');  // Get all data from the lessons table
 
-  // Sample video data
-  const videos = [
-    { id: 1, title: 'React for Beginners', thumbnail: 'https://via.placeholder.com/300x200' },
-    { id: 2, title: 'Advanced JavaScript', thumbnail: 'https://via.placeholder.com/300x200' },
-    { id: 3, title: 'HTML & CSS Basics', thumbnail: 'https://via.placeholder.com/300x200' },
-    { id: 4, title: 'Learn Python', thumbnail: 'https://via.placeholder.com/300x200' },
-    { id: 5, title: 'Introduction to React Native', thumbnail: 'https://via.placeholder.com/300x200' },
-    // Add more videos here...
-  ];
+      if (error) {
+        console.error('Error fetching data:', error);
+      } else {
+        setLessons(data);
+      }
+    };
+    fetchLessons()
+  }, [])
 
   const handleSignOutClick = () => {
     setShowSignOut(!showSignOut);
@@ -29,7 +40,7 @@ const HomePage = () => {
         <div className="text-white font-bold text-2xl">
           EdTech
         </div>
-        
+
         {/* Middle - Search Bar */}
         <div className="relative flex-1 mx-4">
           <input
@@ -37,23 +48,23 @@ const HomePage = () => {
             placeholder="Search for videos, courses, etc."
             className="w-500 p-2 pl-10 rounded-lg bg-white text-gray-800 border-2 border-blue-500 focus:outline-none"
           />
-          
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M11 16a7 7 0 1114 0 7 7 0 01-14 0zM11 11V6m0 5h5"
-            />
-          
+
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M11 16a7 7 0 1114 0 7 7 0 01-14 0zM11 11V6m0 5h5"
+          />
+
         </div>
-        
+
         {/* Right side - Profile and Power Button */}
         <div className="flex items-center space-x-4">
           {/* Profile Link */}
           <Link to="/profile" className="text-white font-medium hover:text-blue-300">
             My Profile
           </Link>
-          
+
           {/* Power Button with Dropdown for Sign Out */}
           <div className="relative">
             <button
@@ -92,11 +103,11 @@ const HomePage = () => {
       <div>
         <h2 className="text-3xl font-semibold text-blue-600 my-6">Welcome to EdTech</h2>
       </div>
-      
+
       {/* Categories */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
         {categories.map((category) => (
-          <Link 
+          <Link
             to={`/category/${category}`}
             key={category}
             className="bg-black text-white p-6 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
@@ -112,24 +123,26 @@ const HomePage = () => {
       </div>
       {/* Video Thumbnails Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {videos.map((video) => (
+        {lessons.map((lesson) => (
           <Link
-            key={video.id}
-            to={`/video/${video.id}`} // Link to the video player page
+            key={lesson.id} // Unique key for each video
+            to={`/video`} // Link to the video player page
+            state={{ lesson }} // Pass the lesson data to the video player page
             className="bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300"
           >
             <img
               className="w-full h-48 object-cover rounded-t-lg"
-              src={video.thumbnail}
-              alt={video.title}
+              src={lesson.thumbnailurl}
+              alt={lesson.title}
             />
             <div className="p-4">
-              <h3 className="text-lg font-semibold text-blue-600">{video.title}</h3>
+              <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
             </div>
           </Link>
         ))}
+
       </div>
-    </div>
+    </div >
   );
 };
 
