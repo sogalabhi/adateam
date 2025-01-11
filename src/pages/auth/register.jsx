@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 import './registerpage.css';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
+
+// Initialize Supabase client
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -10,8 +17,31 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    // Handle registration logic here
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      
+      if (error) {
+        setError(error.message); // Handle the error message returned by Supabase
+      } else {
+        // Registration successful
+        console.log('User registered:', data.user);
+        // Optionally, redirect the user or show a success message
+      }
+    } catch (error) {
+      setError(error.message);  // Catch any other errors
+    } finally {
+      setLoading(false);
+    }
   };
+  
+  
 
   return (
     <div className="register-container">
