@@ -11,7 +11,7 @@ const MyCoursesPage = () => {
 
   return (
     <div>
-      <h2 className="text-3xl font-semibold text-blue-600 mb-4">My Courses</h2>
+      <h2 className="text-3xl font-semibold text-blue-600  mb-4">My Courses</h2>
       <div className="space-y-4">
         {courses.map((course) => (
           <div key={course.id} className="p-4 bg-gray-100 rounded-lg shadow-md">

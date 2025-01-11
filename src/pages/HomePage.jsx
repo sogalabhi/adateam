@@ -98,7 +98,7 @@ const HomePage = () => {
       </header>
 
       <div>
-        <h2 className="text-3xl font-semibold text-blue-600 my-6">Welcome to EdTech</h2>
+        <h2 className="text-3xl font-semibold text-blue-600 my-6">Categories</h2>
       </div>
 
       {/* Categories */}

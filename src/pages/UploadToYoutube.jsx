@@ -46,7 +46,7 @@ const VideoUploadPage = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-blue-600 p-8 text-white">
+        <div className="flex flex-col items-center justify-center h-screen bg-blue-600 p-8 m-0 text-white">
             <h1 className="text-4xl font-bold mb-6">Share Your Content</h1>
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg text-black">
                 <input

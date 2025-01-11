@@ -13,7 +13,7 @@ const VideoPlayer = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="m-0 bg-gray-100">
       {/* Header Section */}
       <div className="bg-blue-600 text-white py-4 px-6 flex items-center justify-between shadow-lg">
         
@@ -21,7 +21,7 @@ const VideoPlayer = () => {
       </div>
 
       {/* Main Content Section */}
-      <div className="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-20 mt-8">
+      <div className="max-w-7xl mx-auto m-0 p-6 grid grid-cols-1 md:grid-cols-2 gap-20 mt-8">
         {/* Left Side - Video Player and Details */}
         <div className="space-y-6">
           {/* Video Player */}
