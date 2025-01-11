@@ -1,19 +1,23 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/auth/loginpage';
 import Register from './pages/auth/register';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Correct import for Router
+import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
+import MyCoursesPage from './pages/MyCoursesPage';
+import CategoryPage from './components/CategoryPage';
+import SubCategoryPage from './components/SubCategoryPage';
 
-
-
-function App() {
+const App = () => {
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<Register/>} />
       </Routes>
-    </Router>
+    
   );
-}
+};
 
 export default App;
+
+
 
