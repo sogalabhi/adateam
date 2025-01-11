@@ -21,7 +21,7 @@ import heapq
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all domain
 
-@app.route('/post-text')
+@app.route('/post-text', methods=['POST'])
 def post_text():
     # Get the text sent in the POST request body as JSON
     data = request.get_json()
@@ -105,6 +105,6 @@ def post_text():
     response_text = text_summary(large_text)
 
     # Return the response as JSON
-    return jsonify({"response": response_text})
+    return jsonify({"summary": response_text})
 if __name__ == '__main__':
     app.run(debug=True)

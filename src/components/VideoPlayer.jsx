@@ -5,7 +5,6 @@ import ReactPlayer from 'react-player';
 
 const VideoPlayer = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { lesson } = location.state || {};
 
   if (!lesson) {
