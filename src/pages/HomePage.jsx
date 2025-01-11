@@ -1,12 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
-
-// Initialize Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Replace with your own Supabase URL and Key
 const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
@@ -35,7 +29,9 @@ const HomePage = () => {
   const handleSignOutClick = () => {
     setShowSignOut(!showSignOut);
   };
-
+  const toggleDropdown = () => {
+    setShowSignOut(!showSignOut); // Toggle dropdown visibility
+  };
   return (
     <div>
       {/* Header */}

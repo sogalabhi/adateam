@@ -100,7 +100,6 @@ def text_summary(large_text):
     final_summary = ' '.join(summary)
     return final_summary
 
-
 # Example Usage
 youtube_url = "https://www.youtube.com/watch?v=JzPfMbG1vrE"  # Replace with your video link
 download_folder = "videos"
