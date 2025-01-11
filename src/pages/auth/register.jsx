@@ -58,7 +58,7 @@ const Register = () => {
   };
   const registered = () => {
     
-    alert("Thank you for completing the survey!"); // Show the alert
+    alert("User Registered!"); // Show the alert
     navigate("/onboarding"); // Navigate to /onboarding
   };
 

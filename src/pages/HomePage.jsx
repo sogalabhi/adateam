@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
 
 // Replace with your own Supabase URL and Key
 const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
 const supabase = createClient(supabaseUrl, supabaseKey);
+
 const HomePage = () => {
   const [showSignOut, setShowSignOut] = useState(false);
+  const [role, setRole] = useState(''); // State for user role
+  const [userLoggedIn, setUserLoggedIn] = useState(false); // To track user login state
   const navigate = useNavigate(); // For navigation after sign-out
   const categories = ['Tech', 'Finance', 'Electronics', 'Marketing'];
   const [lessons, setLessons] = useState([]);
+
   useEffect(() => {
     const fetchLessons = async () => {
       const { data, error } = await supabase
@@ -23,15 +27,43 @@ const HomePage = () => {
         setLessons(data);
       }
     };
-    fetchLessons()
-  }, [])
 
-  const handleSignOutClick = () => {
-    setShowSignOut(!showSignOut);
+    const fetchUserRole = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("Error fetching user:", error);
+        return;
+      }
+      
+      const userRole = data?.user?.user_metadata?.role;
+      setRole(userRole);
+      setUserLoggedIn(!!data); // Set userLoggedIn to true if user exists
+    };
+
+    fetchLessons();
+    fetchUserRole();  // Fetch user role when the component mounts
+
+    if (userLoggedIn) {
+      window.history.replaceState(null, '', '/'); // Replace current history state to prevent going back
+    }
+  }, [userLoggedIn]); // Re-run effect when userLoggedIn changes
+
+  const handleSignOutClick = async () => {
+    try {
+      // Sign out from Supabase
+      await supabase.auth.signOut();
+      
+      // Redirect to the login page
+      window.location.href = '/login';  // Adjust the path to your login page
+    } catch (error) {
+      console.error('Error signing out:', error.message);
+    }
   };
+
   const toggleDropdown = () => {
     setShowSignOut(!showSignOut); // Toggle dropdown visibility
   };
+
   return (
     <div>
       {/* Header */}
@@ -48,14 +80,6 @@ const HomePage = () => {
             placeholder="Search for videos, courses, etc."
             className="w-500 p-2 pl-10 rounded-lg bg-white text-gray-800 border-2 border-blue-500 focus:outline-none"
           />
-
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M11 16a7 7 0 1114 0 7 7 0 01-14 0zM11 11V6m0 5h5"
-          />
-
         </div>
 
         {/* Right side - Profile and Power Button */}
@@ -85,6 +109,17 @@ const HomePage = () => {
 
             {showSignOut && (
               <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-md">
+                {/* Upload Option for Content Creators */}
+                {role === 'content_creator' && (
+                  <Link
+                    to="/upload"
+                    className="w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-200"
+                  >
+                    Upload Content
+                  </Link>
+                )}
+
+                {/* Sign Out Option */}
                 <button
                   className="w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-200"
                   onClick={handleSignOutClick} // Sign out when button is clicked
@@ -135,15 +170,13 @@ const HomePage = () => {
             />
             <div className="p-4 flex justify-between">
               <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
-              <h3 className="text-lg font-semibold text-blue-600">{lesson.price == 0 ? 'Free' : 'Rs. ' + lesson.price}</h3>
+              <h3 className="text-lg font-semibold text-blue-600">{lesson.price === 0 ? 'Free' : 'Rs. ' + lesson.price}</h3>
             </div>
           </Link>
         ))}
       </div>
-    </div >
+    </div>
   );
 };
 
 export default HomePage;
-
-
