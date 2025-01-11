@@ -6,6 +6,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const VideoUploadPage = () => {
+    const [username, setusername] = useState(null);
     const [videoFile, setVideoFile] = useState(null);
     const [thumbnailFile, setThumbnailFile] = useState(null);
     const [title, setTitle] = useState('');
@@ -20,13 +21,15 @@ const VideoUploadPage = () => {
 
     const getSession = async () => {
         const { data: { session } } = await supabase.auth.getSession();
+        const user = await supabase.auth.getUser();
+        const name = user['data']['user']['user_metadata']['display_name'];
+        setusername(name);
         if (!session) {
             setErrorMessage("Please log in to upload a video.");
         }
         return session;
     };
     useEffect(() => {
-
         getSession();
     }, []);
 
@@ -130,7 +133,8 @@ const VideoUploadPage = () => {
                             content_url: videoUrl,
                             price: price,
                             tags: tags,
-                            summary: summary
+                            summary: summary,
+                            author: username
                         },
                     ]);
 

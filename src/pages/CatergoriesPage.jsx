@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
+import Navbar from '../components/Navbar';
 
 export default function CatergoriesPage() {
   const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
@@ -13,7 +14,7 @@ export default function CatergoriesPage() {
     const fetchLessons = async (tag) => {
       const { data, error } = await supabase
         .from('lessons')
-        .select('*')  // Get all data from the lessons table
+        .select('*')
         .filter('tags', 'cs', `{${tag}}`);
       if (error) {
         console.error('Error fetching data:', error);
@@ -22,30 +23,40 @@ export default function CatergoriesPage() {
       }
       console.log(data);
     };
-    fetchLessons(categoryName)
-  }, []);
+    fetchLessons(categoryName);
+  }, [categoryName]);
+
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <Navbar />
+      <h2 className="text-3xl font-bold text-blue-600 mb-6 text-left mt-4 ml-2">Category: {categoryName}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        Category
-        {lessons.map((lesson) => (
-          <Link
-            key={lesson.id} // Unique key for each video
-            to={`/video`} // Link to the video player page
-            state={{ lesson }} // Pass the lesson data to the video player page
-            className="bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300"
-          >
-            <img
-              className="w-full h-48 object-cover rounded-t-lg"
-              src={lesson.thumbnailurl}
-              alt={lesson.title}
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
-            </div>
-          </Link>
-        ))}
+  {lessons.map((lesson) => (
+    <Link
+      key={lesson.id}
+      to={`/video`}
+      state={{ lesson }}
+      className="group relative bg-white rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl"
+    >
+      <div className="relative overflow-hidden rounded-t-lg">
+        <img
+          className="w-full h-48 object-cover"
+          src={lesson.thumbnailurl}
+          alt={lesson.title}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="text-white text-lg font-semibold">{lesson.title}</span>
+        </div>
       </div>
+      <div className="p-4 text-center">
+        <h3 className="text-lg font-semibold text-blue-600 group-hover:text-blue-800">{lesson.title}</h3>
+      </div>
+    </Link>
+  ))}
+</div>
+
     </div>
-  )
+  );
 }
+
+
