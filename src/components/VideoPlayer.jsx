@@ -20,10 +20,10 @@ const VideoPlayer = () => {
       title: 'Advanced JavaScript',
       description: 'Learn the advanced features of JavaScript like closures, async/await, and promises.',
       author: 'Jane Smith',
-      videoUrl: 'https://www.youtube.com/watch?v=3JluqTojuME',
+      videoUrl: 'https://bcgvspkuazvdtmzaqyiw.supabase.co/storage/v1/object/public/videos/1736610527993_video.mp4',
       summary: 'This video goes deep into JavaScript, covering advanced topics such as closures, async programming, and best practices for writing clean, efficient code.',
     },
-    // Add more videos...
+    
   };
 
   const currentVideo = videoData[videoId];
@@ -46,7 +46,7 @@ const VideoPlayer = () => {
         </div>
 
         {/* Video Title and Description */}
-        <div className="text-center">
+        <div className="text-left">
           <h2 className="text-3xl font-semibold text-blue-600">{currentVideo.title}</h2>
           <p className="mt-2 text-lg text-gray-600">{currentVideo.description}</p>
           <p className="mt-4 text-md font-medium text-gray-800">By: {currentVideo.author}</p>
