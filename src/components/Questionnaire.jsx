@@ -45,7 +45,7 @@ const Questionnaire = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-blue-100 p-6 text-center">
+        <div className="flex flex-col items-center justify-center h-[100vh] bg-blue-100 p-6 m-0 text-center">
             {/* Question Section */}
             <BearMascot />
             <h1 className="text-4xl font-bold text-blue-700 mb-6 animate-fadeIn">
