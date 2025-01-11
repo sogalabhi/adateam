@@ -8,6 +8,7 @@ import Login from './pages/auth/loginpage';
 import UploadToYoutube from './pages/UploadToYoutube';
 import CatergoriesPage from './pages/CatergoriesPage';
 import Register from './pages/auth/register';
+import MyCoursesPage from './pages/MyCoursesPage';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       <Route path="/onboarding" element={<Questionnaire />} />
       <Route path="/category/:categoryName" element={<CatergoriesPage />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/mycourses" element={<MyCoursesPage />} />
     </Routes>
 
   );

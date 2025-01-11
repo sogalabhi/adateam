@@ -65,7 +65,10 @@ const HomePage = () => {
               alt={lesson.title}
             />
             <div className="p-4 flex justify-between">
-              <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
+              <div className="">
+                <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
+                <h3 className="text-xs font-semibold text-blue-600">By {lesson.author ? lesson.author : 'Unknown'}</h3>
+              </div>
               <h3 className="text-lg font-semibold text-blue-600">{lesson.price == 0 ? 'Free' : 'Rs. ' + lesson.price}</h3>
             </div>
           </Link>
