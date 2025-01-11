@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Correct import for Router
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import MyCoursesPage from './pages/MyCoursesPage';
@@ -8,7 +8,6 @@ import SubCategoryPage from './components/SubCategoryPage';
 
 const App = () => {
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
@@ -16,10 +15,11 @@ const App = () => {
         <Route path="/category/:categoryName" element={<CategoryPage />} />
         <Route path="/category/:categoryName/:subCategoryName" element={<SubCategoryPage />} />
       </Routes>
-    </Router>
+    
   );
 };
 
 export default App;
+
 
 
