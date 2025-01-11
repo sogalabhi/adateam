@@ -52,28 +52,34 @@ const HomePage = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {lessons.map((lesson) => (
-          <Link
-            key={lesson.id}
-            to={`/video`}
-            state={{ lesson }}
-            className="group bg-white rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl"
-          >
-            <img
-              className="w-full h-48 object-cover rounded-t-lg"
-              src={lesson.thumbnailurl}
-              alt={lesson.title}
-            />
-            <div className="p-4 flex justify-between">
-              <div className="">
-                <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
-                <h3 className="text-xs font-semibold text-blue-600">By {lesson.author ? lesson.author : 'Unknown'}</h3>
-              </div>
-              <h3 className="text-lg font-semibold text-blue-600">{lesson.price == 0 ? 'Free' : 'Rs. ' + lesson.price}</h3>
-            </div>
-          </Link>
-        ))}
+  {lessons.map((lesson) => (
+    <Link
+      key={lesson.id}
+      to={`/video`}
+      state={{ lesson }}
+      className="group relative bg-white rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl"
+    >
+      <div className="relative overflow-hidden rounded-t-lg">
+        <img
+          className="w-full h-48 object-cover"
+          src={lesson.thumbnailurl}
+          alt={lesson.title}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="text-white text-lg font-semibold">By {lesson.author ? lesson.author : 'Unknown'}</span>
+        </div>
       </div>
+      <div className="p-4 flex justify-between">
+        <div>
+          <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
+          
+        </div>
+        <h3 className="text-lg font-semibold text-blue-600">{lesson.price == 0 ? 'Free' : 'Rs. ' + lesson.price}</h3>
+      </div>
+    </Link>
+  ))}
+</div>
+
     </div>
   );
 };
