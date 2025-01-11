@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './registerpage.css';
 import { createClient } from '@supabase/supabase-js';
+import { useNavigate } from 'react-router-dom';
+
 
 const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
@@ -16,6 +18,8 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  
+  const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -51,6 +55,11 @@ const Register = () => {
     } finally {
       setLoading(false);
     }
+  };
+  const registered = () => {
+    
+    alert("Thank you for completing the survey!"); // Show the alert
+    navigate("/onboarding"); // Navigate to /onboarding
   };
 
   return (
@@ -113,8 +122,10 @@ const Register = () => {
             type="submit"
             className="register-button"
             disabled={loading}
+            onClick={registered}
           >
             {loading ? 'Registering...' : 'Register'}
+            
           </button>
         </form>
 

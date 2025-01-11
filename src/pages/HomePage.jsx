@@ -98,7 +98,7 @@ const HomePage = () => {
       </header>
 
       <div>
-        <h2 className="text-3xl font-semibold text-blue-600 my-6">Categories</h2>
+        <h2 className="text-3xl relative left-2 font-semibold text-blue-600 my-6">Categories</h2>
       </div>
 
       {/* Categories */}
@@ -116,7 +116,7 @@ const HomePage = () => {
 
       {/* Video Thumbnails Section */}
       <div>
-        <h3 className="text-2xl font-semibold text-blue-600 my-6">Latest Videos</h3>
+        <h3 className="text-2xl relative left-2 font-semibold text-blue-600 my-6">Latest Videos</h3>
       </div>
 
       {/* Video Thumbnails Grid */}

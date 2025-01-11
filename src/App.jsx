@@ -7,6 +7,7 @@ import VideoPlayer from './components/VideoPlayer'; // Import the VideoPlayer co
 import Login from './pages/auth/loginpage';
 import UploadToYoutube from './pages/UploadToYoutube';
 import CatergoriesPage from './pages/CatergoriesPage';
+import Register from './pages/auth/register';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
       <Route path="/upload" element={<UploadToYoutube />} />
       <Route path="/onboarding" element={<Questionnaire />} />
       <Route path="/category/:categoryName" element={<CatergoriesPage />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
 
   );
