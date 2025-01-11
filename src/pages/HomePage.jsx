@@ -1,10 +1,16 @@
-// src/pages/HomePage.jsx
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
+
+// Initialize Supabase client
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const HomePage = () => {
   const [showSignOut, setShowSignOut] = useState(false);
+  const navigate = useNavigate(); // For navigation after sign-out
   const categories = ['Tech', 'Finance', 'Electronics', 'Marketing'];
 
   // Sample video data
@@ -14,11 +20,21 @@ const HomePage = () => {
     { id: 3, title: 'HTML & CSS Basics', thumbnail: 'https://via.placeholder.com/300x200' },
     { id: 4, title: 'Learn Python', thumbnail: 'https://via.placeholder.com/300x200' },
     { id: 5, title: 'Introduction to React Native', thumbnail: 'https://via.placeholder.com/300x200' },
-    // Add more videos here...
   ];
 
-  const handleSignOutClick = () => {
-    setShowSignOut(!showSignOut);
+  const handleSignOutClick = async () => {
+    const { error } = await supabase.auth.signOut(); // Sign out from Supabase
+    if (error) {
+      console.error('Sign-out error:', error.message);
+    } else {
+      console.log('User signed out successfully');
+      setShowSignOut(false); // Close the dropdown after sign-out
+      navigate('/Login'); // Redirect to login page after sign-out
+    }
+  };
+
+  const toggleDropdown = () => {
+    setShowSignOut(!showSignOut); // Toggle dropdown visibility
   };
 
   return (
@@ -26,10 +42,8 @@ const HomePage = () => {
       {/* Header */}
       <header className="bg-blue-600 p-4 flex justify-between items-center">
         {/* Left side - Logo */}
-        <div className="text-white font-bold text-2xl">
-          EdTech
-        </div>
-        
+        <div className="text-white font-bold text-2xl">EdTech</div>
+
         {/* Middle - Search Bar */}
         <div className="relative flex-1 mx-4">
           <input
@@ -37,27 +51,19 @@ const HomePage = () => {
             placeholder="Search for videos, courses, etc."
             className="w-500 p-2 pl-10 rounded-lg bg-white text-gray-800 border-2 border-blue-500 focus:outline-none"
           />
-          
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M11 16a7 7 0 1114 0 7 7 0 01-14 0zM11 11V6m0 5h5"
-            />
-          
         </div>
-        
+
         {/* Right side - Profile and Power Button */}
         <div className="flex items-center space-x-4">
           {/* Profile Link */}
           <Link to="/profile" className="text-white font-medium hover:text-blue-300">
             My Profile
           </Link>
-          
+
           {/* Power Button with Dropdown for Sign Out */}
           <div className="relative">
             <button
-              onClick={handleSignOutClick}
+              onClick={toggleDropdown} // Toggle dropdown visibility on click
               className="text-white font-medium hover:text-blue-300"
             >
               <svg
@@ -68,18 +74,15 @@ const HomePage = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19 9l-7 7-7-7"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+
             {showSignOut && (
               <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-md">
                 <button
                   className="w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-200"
-                  onClick={() => alert('Signed out!')}
+                  onClick={handleSignOutClick} // Sign out when button is clicked
                 >
                   Sign Out
                 </button>
@@ -92,11 +95,11 @@ const HomePage = () => {
       <div>
         <h2 className="text-3xl font-semibold text-blue-600 my-6">Welcome to EdTech</h2>
       </div>
-      
+
       {/* Categories */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
         {categories.map((category) => (
-          <Link 
+          <Link
             to={`/category/${category}`}
             key={category}
             className="bg-black text-white p-6 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
@@ -110,6 +113,7 @@ const HomePage = () => {
       <div>
         <h3 className="text-2xl font-semibold text-blue-600 my-6">Latest Videos</h3>
       </div>
+
       {/* Video Thumbnails Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {videos.map((video) => (
@@ -134,4 +138,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
 
