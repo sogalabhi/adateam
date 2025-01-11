@@ -1,20 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import ProfilePage from './pages/ProfilePage';
-import MyCoursesPage from './pages/MyCoursesPage';
-import CategoryPage from './components/CategoryPage';
-import SubCategoryPage from './components/SubCategoryPage';
+import Login from './pages/auth/loginpage';
+import Register from './pages/auth/register';
+
+
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/my-courses" element={<MyCoursesPage />} />
-        <Route path="/category/:categoryName" element={<CategoryPage />} />
-        <Route path="/category/:categoryName/:subCategoryName" element={<SubCategoryPage />} />
+        <Route path="/" element={<Register/>} />
       </Routes>
     </Router>
   );
