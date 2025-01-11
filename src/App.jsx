@@ -16,7 +16,6 @@ const App = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/video" element={<VideoPlayer />} /> {/* Video player page */}
-      <Route path="/login" element={<Login />} />
       <Route path="/upload" element={<UploadToYoutube />} />
       <Route path="/onboarding" element={<Questionnaire />} />
       <Route path="/category/:categoryName" element={<CatergoriesPage />} />
