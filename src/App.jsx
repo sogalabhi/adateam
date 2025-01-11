@@ -7,11 +7,17 @@ import ProfilePage from './pages/ProfilePage';
 import MyCoursesPage from './pages/MyCoursesPage';
 import CategoryPage from './components/CategoryPage';
 import SubCategoryPage from './components/SubCategoryPage';
+import UploadToYoutube from './pages/UploadToYoutube';
 
 const App = () => {
   return (
       <Routes>
-        <Route path="/" element={<Login/>} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/upload" element={<UploadToYoutube />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/my-courses" element={<MyCoursesPage />} />
+        <Route path="/category/:categoryName" element={<CategoryPage />} />
+        <Route path="/category/:categoryName/:subCategoryName" element={<SubCategoryPage />} />
       </Routes>
     
   );
