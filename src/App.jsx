@@ -6,10 +6,10 @@ import Questionnaire from './components/Questionnaire';
 import VideoPlayer from './components/VideoPlayer'; // Import the VideoPlayer component
 import Login from './pages/auth/loginpage';
 import UploadToYoutube from './pages/UploadToYoutube';
+import CatergoriesPage from './pages/CatergoriesPage';
 
 const App = () => {
   return (
-
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<Login />} />
@@ -17,6 +17,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/upload" element={<UploadToYoutube />} />
       <Route path="/onboarding" element={<Questionnaire />} />
+      <Route path="/category/:categoryName" element={<CatergoriesPage />} />
     </Routes>
 
   );

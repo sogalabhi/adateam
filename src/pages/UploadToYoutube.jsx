@@ -180,7 +180,7 @@ const VideoUploadPage = () => {
                 type="text"
                 value={tags}
                 onChange={(e) => {
-                    setTags(e.target.value.split(','));
+                    setTags(e.target.value.split(',').map(element => element.trim()));
                 }}
                 required
             />

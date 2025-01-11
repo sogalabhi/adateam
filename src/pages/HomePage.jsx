@@ -8,7 +8,6 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
 const supabase = createClient(supabaseUrl, supabaseKey);
-
 const HomePage = () => {
   const [showSignOut, setShowSignOut] = useState(false);
   const categories = ['Tech', 'Finance', 'Electronics', 'Marketing'];
@@ -135,12 +134,12 @@ const HomePage = () => {
               src={lesson.thumbnailurl}
               alt={lesson.title}
             />
-            <div className="p-4">
+            <div className="p-4 flex justify-between">
               <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
+              <h3 className="text-lg font-semibold text-blue-600">{lesson.price == 0 ? 'Free' : 'Rs. ' + lesson.price}</h3>
             </div>
           </Link>
         ))}
-
       </div>
     </div >
   );
