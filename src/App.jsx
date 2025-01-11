@@ -13,6 +13,7 @@ const App = () => {
   return (
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/upload" element={<UploadToYoutube />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/my-courses" element={<MyCoursesPage />} />
