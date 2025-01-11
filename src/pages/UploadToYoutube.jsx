@@ -103,30 +103,30 @@ const VideoUploadPage = () => {
             } else {
                 console.log(tags);
                 // Step 3: Insert video details into Supabase database
-                // const { data: insertData, error: insertError } = await supabase
-                //     .from('lessons')
-                //     .insert([
-                //         {
-                //             uuid: session.user.id,
-                //             description: description,
-                //             thumbnailurl: thumbnailurl,
-                //             title: title,
-                //             content_url: url,
-                //             tags: tags
-                //         },
-                //     ]);
+                const { data: insertData, error: insertError } = await supabase
+                    .from('lessons')
+                    .insert([
+                        {
+                            uuid: session.user.id,
+                            description: description,
+                            thumbnailurl: thumbnailurl,
+                            title: title,
+                            content_url: url,
+                            tags: tags
+                        },
+                    ]);
 
-                // if (insertError) {
-                //     console.error('Error inserting lesson:', insertError.message);
-                //     setUploadStatus('Error saving lesson details.');
-                //     return;
-                // }
-                // if (insertData) {
-                //     console.log('insertData');
-                // }
-                // setUploadStatus('Lesson added successfully!');
-                // console.log("Video uploaded successfully. Public URL:", url);
-                // setSuccessMessage("Video uploaded successfully!");
+                if (insertError) {
+                    console.error('Error inserting lesson:', insertError.message);
+                    setUploadStatus('Error saving lesson details.');
+                    return;
+                }
+                if (insertData) {
+                    console.log('insertData');
+                }
+                setUploadStatus('Lesson added successfully!');
+                console.log("Video uploaded successfully. Public URL:", url);
+                setSuccessMessage("Video uploaded successfully!");
             }
         } catch (error) {
             console.error("Error uploading video:", error);
