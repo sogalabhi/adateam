@@ -12,36 +12,46 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [role, setRole] = useState('student'); // Default to 'student'
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    
+
     setLoading(true);
     setError('');
-    
+
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { user, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
       });
-      
-      if (error) {
-        setError(error.message); // Handle the error message returned by Supabase
+
+      if (signUpError) {
+        setError(signUpError.message);
       } else {
-        // Registration successful
-        console.log('User registered:', data.user);
-        // Optionally, redirect the user or show a success message
+        // Set the role in the user's metadata
+        const { data, error } = await supabase.auth.updateUser({
+          data: {
+            display_name: name,
+            role: role, // Store the selected role in user metadata
+          },
+        });
+
+        if (error) {
+          setError(error.message);
+        } else {
+          console.log('User registered, display name and role set:', data);
+          // Optionally, redirect or show a success message here
+        }
       }
     } catch (error) {
-      setError(error.message);  // Catch any other errors
+      setError(error.message);
     } finally {
       setLoading(false);
     }
   };
-  
-  
 
   return (
     <div className="register-container">
@@ -85,6 +95,18 @@ const Register = () => {
                 placeholder="Enter your password"
               />
             </div>
+
+            <div className="input-group">
+              <label>Role</label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              >
+                <option value="student">Student</option>
+                <option value="content_creator">Content Creator</option>
+              </select>
+            </div>
           </div>
 
           <button
@@ -108,4 +130,5 @@ const Register = () => {
 };
 
 export default Register;
+
 

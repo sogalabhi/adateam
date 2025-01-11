@@ -1,5 +1,3 @@
-// src/components/VideoPlayer.jsx
-
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -62,3 +60,4 @@ const VideoPlayer = () => {
 };
 
 export default VideoPlayer;
+
