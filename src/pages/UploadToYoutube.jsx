@@ -9,17 +9,16 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const VideoUploadPage = () => {
 
     const [uploading, setUploading] = useState(false);
+    const [thumbnailUploading, setThumbnailUploading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
     const [videoFile, setVideoFile] = useState(null);
+    const [thumbnailFile, setThumbnailFile] = useState(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [sectionId, setSectionId] = useState('');
-    const [lessonOrder, setLessonOrder] = useState(0);
-    const [videoDuration, setVideoDuration] = useState(0);
     const [price, setPrice] = useState(0);
+    const [tags, setTags] = useState([]);
     const [uploadStatus, setUploadStatus] = useState('');
-    const [contentType] = useState('video'); // Static content type for now
     const getSession = async () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
@@ -34,13 +33,9 @@ const VideoUploadPage = () => {
 
     const handleFileChange = (e) => {
         setVideoFile(e.target.files[0]);
-        // Create a temporary video element to load the file
-        // const videoElement = document.createElement('video');
-        // videoElement.src = URL.createObjectURL(videoFile);
-
-        // videoElement.onloadedmetadata = () => {
-        //     setVideoDuration(videoElement.duration); // Duration in seconds
-        // };
+    };
+    const handleThumbnailFileChange = (e) => {
+        setThumbnailFile(e.target.files[0]);
     };
 
     const handleSubmit = async () => {
@@ -54,14 +49,20 @@ const VideoUploadPage = () => {
             setErrorMessage("Please select a video to upload!");
             return;
         }
+        if (!thumbnailFile) {
+            setErrorMessage("Please select a thumbnail to upload!");
+            return;
+        }
 
         setUploading(true);
+        setThumbnailUploading(true);
         setErrorMessage(null);
         setSuccessMessage(null);
 
         try {
             // Upload video to Supabase Storage
             const fileName = Date.now() + "_" + videoFile.name;
+            const thumbnailfileName = Date.now() + "_img_" + thumbnailFile.name;
             const { data, error: uploadError } = await supabase
                 .storage
                 .from("videos") // Ensure this is the correct bucket name
@@ -69,32 +70,49 @@ const VideoUploadPage = () => {
                     cacheControl: "3600",
                     upsert: false,
                 });
-
+            const { data: data2, error: uploadError2 } = await supabase
+                .storage
+                .from("thumbnails") // Ensure this is the correct bucket name
+                .upload(thumbnailfileName.replace(/\s+/g, ''), thumbnailFile, {
+                    cacheControl: "3600",
+                    upsert: false,
+                });
+            print(data2);
             if (uploadError) {
                 console.error("Error during upload:", uploadError.message);
                 setErrorMessage(`Error uploading video: ${uploadError.message}`);
                 setUploading(false);
                 return;
             }
+            if (uploadError2) {
+                console.error("Error during upload thumbanil:", uploadError2.message);
+                setErrorMessage(`Error uploading thumbnail: ${uploadError2.message}`);
+                setThumbnailUploading(false);
+                return;
+            }
 
             console.log("File uploaded successfully:", data);
 
             // Get the public URL of the uploaded video
-            const url = 'https://bcgvspkuazvdtmzaqyiw.supabase.co/storage/v1/object/public/videos/' + data.fullPath
-            console.log(url);
+            const url = 'https://bcgvspkuazvdtmzaqyiw.supabase.co/storage/v1/object/public/' + data.fullPath
+            const thumbnailurl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co/storage/v1/object/public/thumbnails/' + thumbnailfileName.replace(/\s+/g, '');
+            console.log(thumbnailurl);
             if (!url) {
                 console.error("Error fetching public URL:", urlError.message);
                 setErrorMessage(`Error fetching video URL: ${urlError.message}`);
             } else {
+                console.log(tags);
                 // Step 3: Insert video details into Supabase database
                 const { data: insertData, error: insertError } = await supabase
                     .from('lessons')
                     .insert([
                         {
-                            id: session.user.id,
+                            uuid: session.user.id,
                             description: description,
+                            thumbnailurl: thumbnailurl,
                             title: title,
                             content_url: url,
+                            tags: tags
                         },
                     ]);
 
@@ -139,14 +157,6 @@ const VideoUploadPage = () => {
             />
 
             <br />
-            <label>Section ID:</label>
-            <input
-                type="number"
-                value={sectionId}
-                onChange={(e) => setSectionId(e.target.value)}
-                required
-            />
-            <br />
             <label>Price (₹):</label>
             <input
                 type="number"
@@ -157,6 +167,24 @@ const VideoUploadPage = () => {
             <br />
             <label>Upload Video:</label>
             <input type="file" accept="video/*" onChange={handleFileChange} required />
+            <br />
+            <label>Thumbnail:</label>
+            <input
+                type="file"
+                onChange={handleThumbnailFileChange}
+                required
+            />
+            <br />
+            <label>Tags:(add commas between each tags)</label>
+            <input
+                type="text"
+                value={tags}
+                onChange={(e) => {
+                    setTags(e.target.value.split(',').map(element => element.trim()));
+                }}
+                required
+            />
+            <br />
             <button
                 type="submit"
                 onClick={handleSubmit}
@@ -172,7 +200,7 @@ const VideoUploadPage = () => {
                 Add Lesson
             </button>
             <p>{uploadStatus}</p>
-        </div>
+        </div >
 
     );
 };
