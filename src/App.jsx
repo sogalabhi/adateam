@@ -8,13 +8,15 @@ import SubCategoryPage from './components/SubCategoryPage';
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/my-courses" element={<MyCoursesPage />} />
-      <Route path="/category/:categoryName" element={<CategoryPage />} />
-      <Route path="/category/:categoryName/:subCategoryName" element={<SubCategoryPage />} />
-    </Routes>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/my-courses" element={<MyCoursesPage />} />
+        <Route path="/category/:categoryName" element={<CategoryPage />} />
+        <Route path="/category/:categoryName/:subCategoryName" element={<SubCategoryPage />} />
+      </Routes>
+    </Router>
   );
 };
 
