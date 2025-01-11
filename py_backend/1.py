@@ -2,6 +2,10 @@ import os
 import cv2
 import yt_dlp
 
+from moviepy.editor import VideoFileClip
+
+from google.cloud import speech
+
 def download_youtube_video(youtube_url, output_folder="videos"):
     """
     Downloads a YouTube video and saves it locally using yt-dlp.
@@ -55,6 +59,10 @@ def extract_keyframes(video_path, output_folder, frame_interval=30):
     print(f"Keyframes extracted: {saved_count}")
     print(f"Saved in folder: {output_folder}")
 
+
+
+
+
 # Example Usage
 youtube_url = "https://www.youtube.com/watch?v=NrO0CJCbYLA"  # Replace with your video link
 download_folder = "videos"
@@ -64,6 +72,37 @@ frame_interval = 30
 # Step 1: Download YouTube video
 downloaded_video_path = download_youtube_video(youtube_url, download_folder)
 
+# Load your video file
+video = VideoFileClip(downloaded_video_path)
+
+# Extract the audio
+audio = video.audio
+
 if downloaded_video_path:
     # Step 2: Extract keyframes
-    extract_keyframes(downloaded_video_path, keyframes_folder, frame_interval)
+    # extract_keyframes(downloaded_video_path, keyframes_folder, frame_interval)
+    # Save audio as an MP3 file
+    audio.write_audiofile('output_audio.mp3')
+
+    # Initialize Google Cloud Speech client
+    client = speech.SpeechClient()
+
+    # Load your audio file
+    with open('output_audio.mp3', 'rb') as audio_file:
+        content = audio_file.read()
+
+    audio = speech.RecognitionAudio(content=content)
+
+    # Configure the recognition settings
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.MP3,  # MP3 encoding
+        sample_rate_hertz=16000,  # Sample rate
+        language_code="en-US",  # Language
+    )
+
+    # Perform speech recognition
+    response = client.recognize(config=config, audio=audio)
+
+    # Print the transcribed text
+    for result in response.results:
+        print(f"Transcript: {result.alternatives[0].transcript}")
