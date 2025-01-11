@@ -1,16 +1,20 @@
-// src/pages/HomePage.jsx
-
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
+
+// Initialize Supabase client
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Replace with your own Supabase URL and Key
 const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
 const supabase = createClient(supabaseUrl, supabaseKey);
-
 const HomePage = () => {
   const [showSignOut, setShowSignOut] = useState(false);
+  const navigate = useNavigate(); // For navigation after sign-out
   const categories = ['Tech', 'Finance', 'Electronics', 'Marketing'];
   const [lessons, setLessons] = useState([]);
   useEffect(() => {
@@ -68,7 +72,7 @@ const HomePage = () => {
           {/* Power Button with Dropdown for Sign Out */}
           <div className="relative">
             <button
-              onClick={handleSignOutClick}
+              onClick={toggleDropdown} // Toggle dropdown visibility on click
               className="text-white font-medium hover:text-blue-300"
             >
               <svg
@@ -79,18 +83,15 @@ const HomePage = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19 9l-7 7-7-7"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+
             {showSignOut && (
               <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-md">
                 <button
                   className="w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-200"
-                  onClick={() => alert('Signed out!')}
+                  onClick={handleSignOutClick} // Sign out when button is clicked
                 >
                   Sign Out
                 </button>
@@ -121,6 +122,7 @@ const HomePage = () => {
       <div>
         <h3 className="text-2xl font-semibold text-blue-600 my-6">Latest Videos</h3>
       </div>
+
       {/* Video Thumbnails Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {lessons.map((lesson) => (
@@ -135,16 +137,17 @@ const HomePage = () => {
               src={lesson.thumbnailurl}
               alt={lesson.title}
             />
-            <div className="p-4">
+            <div className="p-4 flex justify-between">
               <h3 className="text-lg font-semibold text-blue-600">{lesson.title}</h3>
+              <h3 className="text-lg font-semibold text-blue-600">{lesson.price == 0 ? 'Free' : 'Rs. ' + lesson.price}</h3>
             </div>
           </Link>
         ))}
-
       </div>
     </div >
   );
 };
 
 export default HomePage;
+
 
