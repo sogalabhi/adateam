@@ -1,28 +1,18 @@
+// src/components/CategoryPage.jsx
+
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import Navbar from './Navbar';
+import { useParams } from 'react-router-dom';
 
 const CategoryPage = () => {
   const { categoryName } = useParams();
-  const subCategories = {
-    tech: ['ML', 'App', 'Web', 'Web3'],
-    electronics: ['Circuits', 'Robotics', 'IoT'],
-    jee: ['Physics', 'Math', 'Chemistry']
-  };
 
   return (
     <div>
-      <Navbar />
-      <h1 className="text-2xl font-bold p-4">{categoryName.toUpperCase()}</h1>
-      <div className="flex gap-4 p-4">
-        {subCategories[categoryName]?.map(sub => (
-          <Link key={sub} to={`/category/${categoryName}/${sub.toLowerCase()}`} className="bg-gray-200 p-4 rounded-lg">
-            {sub}
-          </Link>
-        ))}
-      </div>
+      <h2 className="text-3xl font-semibold text-blue-600">Category: {categoryName}</h2>
+      {/* Add logic to display courses or videos */}
     </div>
   );
 };
 
 export default CategoryPage;
+
