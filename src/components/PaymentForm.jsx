@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PDFDownloadLink, Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 
+import { createClient } from '@supabase/supabase-js';
+const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
+const supabase = createClient(supabaseUrl, supabaseKey);
 const PaymentForm = ({ lesson }) => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -13,6 +17,50 @@ const PaymentForm = ({ lesson }) => {
   const [showNextButton, setShowNextButton] = useState(false); // State to show Next button after alert
   const navigate = useNavigate();
 
+  const adduidtousers_info = async (lesson) => {
+    try {
+      // Fetch the user data with the given uuid
+      const user = await supabase.auth.getUser();
+      const uuid = user['data']['user']['id'];
+      const { data, error } = await supabase
+        .from('users_info')
+        .select('uuid, mycourses')
+        .eq('uuid', uuid)
+        .single();
+
+      if (error && error.code === 'PGRST116') {
+        // If the user does not exist, create a new row with uuid and the mycourses field
+        const { insertError } = await supabase
+          .from('users_info')
+          .insert([{ uuid, mycourses: [lesson.uid] }]);
+
+        if (insertError) {
+          console.error('Error inserting new user:', insertError);
+        } else {
+          console.log('New user created successfully!');
+        }
+      } else if (data) {
+        // If user exists, update the mycourses field
+        const currentCourses = data.mycourses || [];
+        const updatedCourses = [...new Set([...currentCourses, lesson.uid])];
+
+        const { updateError } = await supabase
+          .from('users_info')
+          .update({ mycourses: updatedCourses })
+          .eq('uuid', uuid);
+
+        if (updateError) {
+          console.error('Error updating courses:', updateError);
+        } else {
+          console.log('Courses updated successfully!');
+        }
+      }
+    } catch (error) {
+      console.error('Error updating mycourses:', error);
+    }
+    // Navigate to payment route with the selected lesson data
+    navigate('/video', { state: { lesson } });
+  }
   const handlePurchase = (e) => {
     e.preventDefault();
     setIsProcessing(true);
@@ -22,6 +70,7 @@ const PaymentForm = ({ lesson }) => {
       setIsProcessing(false);
       setPaymentSuccessful(true); // Mark payment as successful
       alert('Payment Successful!.');
+      adduidtousers_info(lesson);
       setShowNextButton(true); // Show the Next button after the alert
     }, 2000); // Simulate processing time
   };
@@ -108,10 +157,10 @@ const PaymentForm = ({ lesson }) => {
       <div className="bg-white flex w-4/5 md:w-1/2 rounded-lg shadow-lg overflow-hidden">
         {/* Image Section */}
         <div className="w-2/5 flex justify-center relative bg-blue-600">
-          <img 
+          <img
             src="src/assets/17395a71e08f8ed379d8ca6d5d24befd.gif" // Adjust path accordingly
             alt="Waving Bear Mascot"
-            className="absolute right-0.2 top-[20%] w-70 h-70 object-contain"
+            className="absolute right-0.2 top-[20%] w-70 h-70  object-contain"
           />
         </div>
 
