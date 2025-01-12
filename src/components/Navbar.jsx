@@ -65,6 +65,9 @@ const Navbar = () => {
           {/* Right side - Profile and Power Button */}
           <div className="flex items-center space-x-4">
             {(role === 'content_creator') ?
+              <Link to="/createcourse" className="text-white font-medium hover:text-blue-300">Create new course</Link> : null
+            }
+            {(role === 'content_creator') ?
               <Link to="/upload" className="text-white font-medium hover:text-blue-300">Upload</Link> : null
             }
             {(role === 'content_creator') ?

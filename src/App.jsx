@@ -13,6 +13,7 @@ import ProtectedRoute from './pages/auth/protectedroute'; // Import ProtectedRou
 import PaymentPage from './pages/PaymentPage';
 import StudentsCoursesPage from './pages/StudentCourses';
 import AuthorCoursesPage from './pages/authorpage';
+import CreateCoursePage from './pages/CreateCoursePage';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
       <Route path="/studentcourses" element={<StudentsCoursesPage />} />
       <Route path="/payment" element={<PaymentPage />} />
       <Route path="/author" element={<AuthorCoursesPage />} />
+      <Route path="/createcourse" element={<CreateCoursePage />} />
     </Routes>
   );
 };

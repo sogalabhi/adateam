@@ -15,6 +15,8 @@ const VideoUploadPage = () => {
     const [price, setPrice] = useState(0);
     const [tags, setTags] = useState('');
     const [uploadStatus, setUploadStatus] = useState('');
+    const [courseslist, setcourseslist] = useState([]);
+    const [selectedCourse, setselectedcourses] = useState([]);
     const [uploading, setUploading] = useState();
     const [thumbnailuploading, setThumbnailUploading] = useState();
     const [errorMessage, setErrorMessage] = useState();
@@ -30,7 +32,26 @@ const VideoUploadPage = () => {
         }
         return session;
     };
+    const fetchCourseTitles = async () => {
+        const { data, error } = await supabase
+            .from('courses') // Replace with your table name
+            .select('title, uid'); // Specify the column to fetch
+
+        if (error) {
+            console.error('Error fetching titles:', error);
+            return [];
+        }
+
+        // Extract titles into an array
+        const coursesArray = data.map((row) => ({
+            title: row.title,
+            uid: row.uid,
+        }));
+
+        setcourseslist(coursesArray);
+    };
     useEffect(() => {
+        fetchCourseTitles();
         getSession();
     }, []);
 
@@ -118,9 +139,10 @@ const VideoUploadPage = () => {
                 console.error("Error fetching public URL:", urlError.message);
                 setErrorMessage(`Error fetching video URL: ${urlError.message}`);
             } else {
-                console.log(tags);
-
-                var summary = await generateSummary(videoUrl)
+                console.log(selectedCourse);
+                
+                var summary = "Demo summary";
+                // var summary = await generateSummary(videoUrl)
                 var uid = uuidv4();
                 // Step 3: Insert video details into Supabase database
                 const { data: insertData, error: insertError } = await supabase
@@ -136,7 +158,8 @@ const VideoUploadPage = () => {
                             price: price,
                             tags: tags,
                             summary: summary,
-                            author: username
+                            author: username,
+                            course_uid: selectedCourse  
                         },
                     ]);
 
@@ -196,6 +219,20 @@ const VideoUploadPage = () => {
                     onChange={handleThumbnailFileChange}
                     className="w-full p-3 border border-gray-300 rounded-lg mb-4"
                 />
+                <div className="input-group">
+                    <label>Select Course</label>
+                    <select
+                        value={selectedCourse}
+                        onChange={(e) => setselectedcourses(e.target.value)}
+                        required
+                    >
+                        {courseslist.map((course, index) => (
+                            <option key={index} value={course.uid}>
+                                {course.title}
+                            </option>
+                        ))}
+                    </select>
+                </div>
                 <input
                     type="text"
                     placeholder="Tags (comma separated)"
