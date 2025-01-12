@@ -3,47 +3,22 @@ import { Link, useParams } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
 import Navbar from '../components/Navbar';
 
+const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
+const supabase = createClient(supabaseUrl, supabaseKey);
 export default function CatergoriesPage() {
-  const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
-  const supabase = createClient(supabaseUrl, supabaseKey);
   const [lessons, setLessons] = useState([]);
-  
-    const [uidlist, setUidlist] = useState([]);
-  
   const { categoryName } = useParams();
-  const fetchuidlist = async () => {
-    var user = await supabase.auth.getUser();
-    var uuid = user['data']['user']['id'];
-    const { data, error } = await supabase
-      .from('users_info')
-      .select('mycourses')
-      .eq('uuid', uuid)  // Filter by UUID
-      .single(); // To get a single row
-
-    if (error) {
-      console.error('Error fetching courses:', error);
-    } else {
-      setUidlist(data ? data.mycourses : []);
-    }
-  };
   const fetchLessons = async () => {
     const { data, error } = await supabase.from('lessons').select('*').filter('tags', 'cs', `{${categoryName}}`);
     if (error) {
       console.error('Error fetching data:', error);
     } else {
-      var arr = [];
-      data.map(lesson => {
-        if (!uidlist.includes(lesson['uid'])) {
-          arr.push(lesson);
-        }
-      });
-      setLessons(arr);
+      setLessons(data);
     }
   };
   useEffect(() => {
     fetchLessons();
-    fetchuidlist();
   }, [lessons, categoryName]);
 
   const handleAddToMyCourseClick = async (lesson) => {
@@ -95,7 +70,6 @@ export default function CatergoriesPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <Navbar />
       <h2 className="text-3xl font-bold text-blue-600 mb-6 text-left mt-4 ml-2">Category: {categoryName}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {lessons.map((lesson) => (
