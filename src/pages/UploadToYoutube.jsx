@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { v4 as uuidv4 } from 'uuid';
 
 const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
@@ -120,12 +121,13 @@ const VideoUploadPage = () => {
                 console.log(tags);
 
                 var summary = await generateSummary(videoUrl)
-                console.log(summary);
+                var uid = uuidv4();
                 // Step 3: Insert video details into Supabase database
                 const { data: insertData, error: insertError } = await supabase
                     .from('lessons')
                     .insert([
                         {
+                            uid: uid,
                             uuid: session.user.id,
                             title: title,
                             description: description,
