@@ -11,8 +11,10 @@ const VideoUploadPage = () => {
     const [videoFile, setVideoFile] = useState(null);
     const [thumbnailFile, setThumbnailFile] = useState(null);
     const [title, setTitle] = useState('');
+    const [summary, setSummary] = useState("");
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
+    const [uploadb, setUploadb] = useState("Upload");
     const [tags, setTags] = useState('');
     const [uploadStatus, setUploadStatus] = useState('');
     const [courseslist, setcourseslist] = useState([]);
@@ -75,6 +77,7 @@ const VideoUploadPage = () => {
     }
 
     const handleSubmit = async () => {
+        setUploadb("Uploading...");
         if (!videoFile || !thumbnailFile || !title || !description) {
             setUploadStatus('Please fill in all fields and upload files.');
             return;
@@ -139,10 +142,11 @@ const VideoUploadPage = () => {
                 console.error("Error fetching public URL:", urlError.message);
                 setErrorMessage(`Error fetching video URL: ${urlError.message}`);
             } else {
-                console.log(selectedCourse);
-                
-                var summary = "Demo summary";
-                // var summary = await generateSummary(videoUrl)
+                console.log(tags);
+
+                var newsummary = await generateSummary(videoUrl)
+                setSummary(newsummary);
+                setUploadb("Uploaded");
                 var uid = uuidv4();
                 // Step 3: Insert video details into Supabase database
                 const { data: insertData, error: insertError } = await supabase
@@ -244,7 +248,7 @@ const VideoUploadPage = () => {
                     onClick={handleSubmit}
                     className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300"
                 >
-                    Upload Video
+                    {uploadb}
                 </button>
                 {uploadStatus && <p className="mt-4 text-center">{uploadStatus}</p>}
             </div>
