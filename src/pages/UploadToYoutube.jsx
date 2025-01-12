@@ -17,6 +17,7 @@ const VideoUploadPage = () => {
     const [uploadStatus, setUploadStatus] = useState('');
     const [courseslist, setcourseslist] = useState([]);
     const [selectedCourse, setselectedcourses] = useState([]);
+    const [btnText, setbtnText] = useState('Upload Video');
     const [uploading, setUploading] = useState();
     const [thumbnailuploading, setThumbnailUploading] = useState();
     const [errorMessage, setErrorMessage] = useState();
@@ -75,6 +76,7 @@ const VideoUploadPage = () => {
     }
 
     const handleSubmit = async () => {
+        setbtnText('Uploading...');
         if (!videoFile || !thumbnailFile || !title || !description) {
             setUploadStatus('Please fill in all fields and upload files.');
             return;
@@ -104,6 +106,7 @@ const VideoUploadPage = () => {
             setErrorMessage(null);
             setSuccessMessage(null);
 
+            setbtnText('Uploading video...');
             const { data, error: uploadError } = await supabase
                 .storage
                 .from("videos") // Ensure this is the correct bucket name
@@ -111,6 +114,8 @@ const VideoUploadPage = () => {
                     cacheControl: "3600",
                     upsert: false,
                 });
+
+            setbtnText('Uploading thumbnail...');
             const { data: data2, error: uploadError2 } = await supabase
                 .storage
                 .from("thumbnails") // Ensure this is the correct bucket name
@@ -140,9 +145,11 @@ const VideoUploadPage = () => {
                 setErrorMessage(`Error fetching video URL: ${urlError.message}`);
             } else {
                 console.log(selectedCourse);
-                
-                var summary = "Demo summary";
-                // var summary = await generateSummary(videoUrl)
+
+                setbtnText('Generating summary...');
+                var summary = await generateSummary(videoUrl)
+
+                setbtnText('Pushing it to database...');
                 var uid = uuidv4();
                 // Step 3: Insert video details into Supabase database
                 const { data: insertData, error: insertError } = await supabase
@@ -159,7 +166,7 @@ const VideoUploadPage = () => {
                             tags: tags,
                             summary: summary,
                             author: username,
-                            course_uid: selectedCourse  
+                            course_uid: selectedCourse
                         },
                     ]);
 
@@ -171,6 +178,7 @@ const VideoUploadPage = () => {
                 if (insertData) {
                     console.log('insertData');
                 }
+                setbtnText('Lesson added successfully!');
                 setUploadStatus('Lesson added successfully!');
                 console.log("Video uploaded successfully. Public URL:", videoUrl);
                 setSuccessMessage("Video uploaded successfully!");
@@ -244,7 +252,7 @@ const VideoUploadPage = () => {
                     onClick={handleSubmit}
                     className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300"
                 >
-                    Upload Video
+                    {btnText}
                 </button>
                 {uploadStatus && <p className="mt-4 text-center">{uploadStatus}</p>}
             </div>

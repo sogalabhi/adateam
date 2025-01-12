@@ -152,6 +152,8 @@ const HomePage = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+
+        {lessons.length === 0 && <h3 className="font-semibold text-blue-600 text-center">No Lessons available</h3>}
         {lessons.map((lesson) => (
           <div
             key={lesson.id}
@@ -191,6 +193,7 @@ const HomePage = () => {
         <h3 className="text-2xl relative left-2 font-semibold text-blue-600 my-6">Latest Courses</h3>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+        {courses.length === 0 && <h3 className="font-semibold text-blue-600 text-center">No courses available</h3>}
         {courses.map((course) => (
           <div
             key={course.id}

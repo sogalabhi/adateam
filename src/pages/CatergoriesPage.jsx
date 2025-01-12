@@ -11,7 +11,7 @@ export default function CatergoriesPage() {
   const [lessons, setLessons] = useState([]);
   const { categoryName } = useParams();
   const fetchLessons = async () => {
-    const { data, error } = await supabase.from('lessons').select('*').filter('tags', 'cs', `{${categoryName}}`);
+    const { data, error } = await supabase.from('lessons').select('*').filter('tags', 'cs', `{${categoryName.toLocaleLowerCase}}`);
     if (error) {
       console.error('Error fetching data:', error);
     } else {

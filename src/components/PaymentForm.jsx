@@ -226,7 +226,7 @@ const PaymentForm = ({ lesson }) => {
             </div>
 
             <div className="mb-4">
-              <span className="text-lg font-semibold">{lesson.price}</span>
+              <span className="text-lg font-semibold">Rs. {lesson.price}</span>
             </div>
 
             <div className="flex justify-between mt-6">
