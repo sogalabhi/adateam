@@ -58,8 +58,6 @@ const PaymentForm = ({ lesson }) => {
     } catch (error) {
       console.error('Error updating mycourses:', error);
     }
-    // Navigate to payment route with the selected lesson data
-    navigate('/video', { state: { lesson } });
   }
   const handlePurchase = (e) => {
     e.preventDefault();
