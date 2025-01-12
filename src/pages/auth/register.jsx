@@ -18,7 +18,7 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  
+
   const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -57,96 +57,96 @@ const Register = () => {
     }
   };
   const registered = () => {
-    
+
     alert("User Registered!"); // Show the alert
     navigate("/onboarding"); // Navigate to /onboarding
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-blue-600 p-8 m-0 text-white">
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-500 to-purple-600 p-8 m-0 text-white">
       <h1 className="text-white">Welcome to Layers!</h1>
-    <div className="flex flex-col items-center justify-center h-screen bg-blue-600 p-8 m-0 text-black">
+      <div className="flex flex-col items-center justify-center h-screen p-8 m-0 text-black">
 
-      <div className="register-box">
-        <div className="register-header">
-          
-          <h2 className="register-title">Create an Account</h2>
-          <p className="register-subtitle">Join us to continue your learning journey.</p>
-        </div>
+        <div className="register-box">
+          <div className="register-header">
 
-        <img
+            <h2 className="register-title">Create an Account</h2>
+            <p className="register-subtitle">Join us to continue your learning journey.</p>
+          </div>
+
+          <img
             src="src/assets/adorable-polar-bear-wiggle-hands-89b0apn8x1ya5iyk.gif" // Adjust path accordingly
             alt="Waving Bear Mascot"
             className="absolute right-[70%] top-[30%] w-56 h-56 object-contain rounded-lg"
-        />
+          />
 
-        <form onSubmit={handleRegister} className="register-form">
-          <div className="form-grid">
-            <div className="input-group">
-              <label>Name</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder="Enter your name"
-              />
+          <form onSubmit={handleRegister} className="register-form">
+            <div className="form-grid">
+              <div className="input-group">
+                <label>Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  placeholder="Enter your name"
+                />
+              </div>
+
+              <div className="input-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              <div className="input-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Enter your password"
+                />
+              </div>
+
+              <div className="input-group">
+                <label>Role</label>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  required
+                >
+                  <option value="student">Student</option>
+                  <option value="content_creator">Content Creator</option>
+                </select>
+              </div>
             </div>
 
-            <div className="input-group">
-              <label>Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="Enter your email"
-              />
-            </div>
+            <button
+              type="submit"
+              className="register-button"
+              disabled={loading}
+              onClick={registered}
+            >
+              {loading ? 'Registering...' : 'Register'}
 
-            <div className="input-group">
-              <label>Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Enter your password"
-              />
-            </div>
+            </button>
+          </form>
 
-            <div className="input-group">
-              <label>Role</label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                required
-              >
-                <option value="student">Student</option>
-                <option value="content_creator">Content Creator</option>
-              </select>
-            </div>
-          </div>
+          {error && <p className="error-message">{error}</p>}
 
-          <button
-            type="submit"
-            className="register-button"
-            disabled={loading}
-            onClick={registered}
-          >
-            {loading ? 'Registering...' : 'Register'}
-            
-          </button>
-        </form>
-
-        {error && <p className="error-message">{error}</p>}
-
-        <p className="register-footer">
-          Already have an account?{' '}
-          <Link to="/login" className="login-link">Log In</Link>
-        </p>
+          <p className="register-footer">
+            Already have an account?{' '}
+            <Link to="/login" className="login-link">Log In</Link>
+          </p>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

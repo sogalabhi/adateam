@@ -32,7 +32,7 @@ const HomePage = () => {
     }
   };
   const fetchLessons = async () => {
-    const { data, error } = await supabase.from('lessons').select('*').limit(10);
+    const { data, error } = await supabase.from('lessons').select('*').limit(9);
     if (error) {
       console.error('Error fetching data:', error);
     } else {
@@ -46,7 +46,7 @@ const HomePage = () => {
     }
   };
   const fetchCourses = async () => {
-    const { data, error } = await supabase.from('courses').select('*').limit(10);
+    const { data, error } = await supabase.from('courses').select('*').limit(9);
     if (error) {
       console.error('Error fetching data:', error);
     } else {
@@ -117,7 +117,7 @@ const HomePage = () => {
       .from('lessons')
       .select('*')
       .textSearch('title', searchtitle)
-      .limit(10);
+      .limit(9);
     if (error) {
       console.error('Error fetching data:', error);
     } else {
@@ -151,7 +151,7 @@ const HomePage = () => {
         <h3 className="text-2xl relative left-2 font-semibold text-blue-600 my-6">Latest Videos</h3>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
         {lessons.map((lesson) => (
           <div
             key={lesson.id}
@@ -190,7 +190,7 @@ const HomePage = () => {
       <div>
         <h3 className="text-2xl relative left-2 font-semibold text-blue-600 my-6">Latest Courses</h3>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
         {courses.map((course) => (
           <div
             key={course.id}
