@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './registerpage.css';
 import { createClient } from '@supabase/supabase-js';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
@@ -63,12 +63,22 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
+    <div className="flex flex-col items-center justify-center h-screen bg-blue-600 p-8 m-0 text-white">
+      <h1 className="text-white">Welcome to Layers!</h1>
+    <div className="flex flex-col items-center justify-center h-screen bg-blue-600 p-8 m-0 text-black">
+
       <div className="register-box">
         <div className="register-header">
+          
           <h2 className="register-title">Create an Account</h2>
           <p className="register-subtitle">Join us to continue your learning journey.</p>
         </div>
+
+        <img
+            src="src/assets/adorable-polar-bear-wiggle-hands-89b0apn8x1ya5iyk.gif" // Adjust path accordingly
+            alt="Waving Bear Mascot"
+            className="absolute right-[70%] top-[30%] w-56 h-56 object-contain rounded-lg"
+        />
 
         <form onSubmit={handleRegister} className="register-form">
           <div className="form-grid">
@@ -133,9 +143,10 @@ const Register = () => {
 
         <p className="register-footer">
           Already have an account?{' '}
-          <a href="#" className="login-link">Log In</a>
+          <Link to="/login" className="login-link">Log In</Link>
         </p>
       </div>
+    </div>
     </div>
   );
 };
