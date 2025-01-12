@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
@@ -113,7 +114,8 @@ const AuthorCoursesPage = () => {
     );
 
     return (
-        <div className="container mx-auto px-4 py-6">
+        <div>
+            <Navbar/>
             <h2 className="text-3xl font-semibold text-blue-600 mb-6">{name}'s Courses</h2>
 
             {/* Search bar */}
