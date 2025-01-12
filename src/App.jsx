@@ -9,6 +9,7 @@ import UploadToYoutube from './pages/UploadToYoutube';
 import CatergoriesPage from './pages/CatergoriesPage';
 import Register from './pages/auth/register';
 import MyCoursesPage from './pages/MyCoursesPage';
+import PaymentPage from './pages/PaymentPage';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
       <Route path="/category/:categoryName" element={<CatergoriesPage />} />
       <Route path="/register" element={<Register />} />
       <Route path="/mycourses" element={<MyCoursesPage />} />
+      <Route path="/payment" element={<PaymentPage />} />
     </Routes>
 
   );
