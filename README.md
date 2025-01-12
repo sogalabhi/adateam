@@ -8,7 +8,7 @@ This project is an innovative EdTech platform that allows learners to pay only f
 
 - **Frontend**: React, Tailwind CSS
 - **Backend**: Flask
-- **AI/ML**: NLTK (Natural Language Toolkit), OpenCV
+- **AI/ML**: NLTK (Natural Language Toolkit)
 - **Database & Authentication**: Supabase (for storage, database, and authentication)
 
 ## Features
