@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PDFDownloadLink, Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 
 const PaymentForm = ({ lesson }) => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
   const [cardHolder, setCardHolder] = useState('');
-  const [cardType, setCardType] = useState('Visa'); // Default card type
+  const [cardType, setCardType] = useState('Visa');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentSuccessful, setPaymentSuccessful] = useState(false); // State to track payment success
+  const [showNextButton, setShowNextButton] = useState(false); // State to show Next button after alert
   const navigate = useNavigate();
 
   const handlePurchase = (e) => {
@@ -17,23 +20,10 @@ const PaymentForm = ({ lesson }) => {
     // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
-      alert('Payment Successful!');
-      navigate(`/video`, { state: { lesson } }); // Navigate to the video page
+      setPaymentSuccessful(true); // Mark payment as successful
+      alert('Payment Successful!.');
+      setShowNextButton(true); // Show the Next button after the alert
     }, 2000); // Simulate processing time
-  };
-
-  const handleCvvChange = (e) => {
-    // Limit CVV input to 3 digits
-    if (e.target.value.length <= 3) {
-      setCvv(e.target.value);
-    }
-  };
-
-  const handleExpiryDateChange = (e) => {
-    // Ensure expiry date is in MM/YY format and has 4 digits
-    if (e.target.value.length <= 5) {
-      setExpiryDate(e.target.value);
-    }
   };
 
   const handleCancel = () => {
@@ -41,18 +31,88 @@ const PaymentForm = ({ lesson }) => {
     navigate('/'); // Redirect to homepage or any other page you prefer
   };
 
+  // Create PDF Document to be downloaded
+  const MyDocument = () => (
+    <Document>
+        <Page style={styles.page}>
+            {/* Title Section */}
+            <Text style={styles.heading}>Payment Receipt </Text>
+            <Text style={styles.subheading}>Thank you for your purchase!</Text>
+            
+            {/* Transaction Details Section */}
+            <Text style={styles.sectionTitle}>Transaction Details</Text>
+            <Text style={styles.detailText}>Lesson: <Text style={styles.highlight}>{lesson.title}</Text></Text>
+            <Text style={styles.detailText}>Price: <Text style={styles.highlight}>${lesson.price}</Text></Text>
+            <Text style={styles.detailText}>Cardholder: <Text style={styles.highlight}>{cardHolder}</Text></Text>
+
+            {/* Footer Section */}
+            <Text style={styles.footer}>If you have any questions, contact support@example.com</Text>
+            <Text style={styles.footer}>Thank you for choosing our course! </Text>
+        </Page>
+    </Document>
+  );
+
+  // Styles for PDF
+  const styles = StyleSheet.create({
+    page: {
+        backgroundColor: '#f0f8ff', // Light blue background
+        padding: 40,
+    },
+    heading: {
+        fontSize: 32,
+        textAlign: 'center',
+        color: '#1a73e8', // Google Blue
+        marginBottom: 10,
+        fontWeight: 'bold',
+    },
+    subheading: {
+        fontSize: 18,
+        textAlign: 'center',
+        marginBottom: 20,
+        color: '#333',
+        fontStyle: 'italic',
+    },
+    sectionTitle: {
+        fontSize: 24,
+        marginBottom: 12,
+        fontWeight: 'bold',
+        color: '#1a73e8',
+        borderBottom: '2px solid #1a73e8',
+        paddingBottom: 5,
+    },
+    detailText: {
+        fontSize: 18,
+        marginVertical: 5,
+        color: '#333',
+    },
+    highlight: {
+        color: '#1a73e8',
+        fontWeight: 'bold',
+    },
+    footer: {
+        marginTop: 30,
+        fontSize: 14,
+        textAlign: 'center',
+        color: '#555',
+    }
+});
+
+
+  // Handle navigation to video after the user clicks Next
+  const handleNext = () => {
+    navigate(`/video`, { state: { lesson } });
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
       <div className="bg-white flex w-4/5 md:w-1/2 rounded-lg shadow-lg overflow-hidden">
         {/* Image Section */}
         <div className="w-2/5 flex justify-center relative bg-blue-600">
-        <img 
-                src="src/assets/17395a71e08f8ed379d8ca6d5d24befd.gif" // Adjust path accordingly
-                alt="Waving Bear Mascot"
-                className="absolute right-0.2 top-[20%] w-70 h-70  object-contain"
-
-            />
-          
+          <img 
+            src="src/assets/17395a71e08f8ed379d8ca6d5d24befd.gif" // Adjust path accordingly
+            alt="Waving Bear Mascot"
+            className="absolute right-0.2 top-[20%] w-70 h-70 object-contain"
+          />
         </div>
 
         {/* Payment Form Section */}
@@ -95,9 +155,10 @@ const PaymentForm = ({ lesson }) => {
                   id="expiryDate"
                   name="expiryDate"
                   value={expiryDate}
-                  onChange={handleExpiryDateChange}
+                  onChange={(e) => setExpiryDate(e.target.value)}
                   placeholder="MM/YY"
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  maxLength="4"
                   required
                 />
               </div>
@@ -108,7 +169,7 @@ const PaymentForm = ({ lesson }) => {
                   id="cvv"
                   name="cvv"
                   value={cvv}
-                  onChange={handleCvvChange}
+                  onChange={(e) => setCvv(e.target.value)}
                   placeholder="CVV"
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   maxLength="3"
@@ -118,19 +179,7 @@ const PaymentForm = ({ lesson }) => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="cardType" className="block text-gray-700 mb-2">Card Type</label>
-              <select
-                id="cardType"
-                name="cardType"
-                value={cardType}
-                onChange={(e) => setCardType(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                required
-              >
-                <option value="Visa">Visa</option>
-                <option value="Mastercard">Mastercard</option>
-                <option value="Rupay">Rupay</option>
-              </select>
+              <span className="text-lg font-semibold">{lesson.price}</span>
             </div>
 
             <div className="flex justify-between mt-6">
@@ -150,6 +199,33 @@ const PaymentForm = ({ lesson }) => {
               </button>
             </div>
           </form>
+
+          {/* Show download PDF option after payment success */}
+          {paymentSuccessful && (
+            <div className="mt-4">
+              <PDFDownloadLink
+                document={<MyDocument />}
+                fileName="receipt.pdf"
+                className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold text-lg"
+              >
+                {({ loading }) =>
+                  loading ? 'Generating PDF...' : 'Download Receipt'
+                }
+              </PDFDownloadLink>
+            </div>
+          )}
+
+          {/* Show Next button after alert */}
+          {showNextButton && (
+            <div className="mt-4">
+              <button
+                onClick={handleNext}
+                className="bg-blue-600 text-white px-6 py-3 relative left-1.5 rounded-lg font-semibold text-lg"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -157,6 +233,10 @@ const PaymentForm = ({ lesson }) => {
 };
 
 export default PaymentForm;
+
+
+
+
 
 
 
