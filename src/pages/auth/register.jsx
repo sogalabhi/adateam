@@ -18,10 +18,30 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  
+  // Email validation regex pattern
+  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
+  // Password validation (minimum 8 characters with letters and numbers)
+  const validatePassword = (password) => password.length >= 8 && /\d/.test(password);
+
   const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError('');
+    
+    // Form validation
+    if (!name.trim()) {
+        setError('Name is required.');
+        return;
+    }
+    if (!validateEmail(email)) {
+        setError('Invalid email address.');
+        return;
+    }
+    if (!validatePassword(password)) {
+        setError('Password must be at least 8 characters with at least one number.');
+        return;
+    }
 
     setLoading(true);
     setError('');
@@ -47,6 +67,7 @@ const Register = () => {
           setError(error.message);
         } else {
           console.log('User registered, display name and role set:', data);
+          registered()
           // Optionally, redirect or show a success message here
         }
       }
@@ -132,7 +153,6 @@ const Register = () => {
             type="submit"
             className="register-button"
             disabled={loading}
-            onClick={registered}
           >
             {loading ? 'Registering...' : 'Register'}
             
