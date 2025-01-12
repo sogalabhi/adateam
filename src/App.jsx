@@ -10,6 +10,7 @@ import CatergoriesPage from './pages/CatergoriesPage';
 import Register from './pages/auth/register';
 import MyCoursesPage from './pages/MyCoursesPage';
 import PaymentPage from './pages/PaymentPage';
+import StudentsCoursesPage from './pages/StudentCourses';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
       <Route path="/category/:categoryName" element={<CatergoriesPage />} />
       <Route path="/register" element={<Register />} />
       <Route path="/mycourses" element={<MyCoursesPage />} />
+      <Route path="/studentcourses" element={<StudentsCoursesPage />} />
       <Route path="/payment" element={<PaymentPage />} />
     </Routes>
 

@@ -64,12 +64,14 @@ const Navbar = () => {
 
           {/* Right side - Profile and Power Button */}
           <div className="flex items-center space-x-4">
-            {console.log(role)}
             {(role === 'content_creator') ?
               <Link to="/upload" className="text-white font-medium hover:text-blue-300">Upload</Link> : null
             }
             {(role === 'content_creator') ?
               <Link to="/mycourses" className="text-white font-medium hover:text-blue-300">My Courses</Link> : null
+            }
+            {(role === 'student') ?
+              <Link to="/studentcourses" className="text-white font-medium hover:text-blue-300">My Courses</Link> : null
             }
 
             {/* Power Button with Dropdown for Sign Out */}
