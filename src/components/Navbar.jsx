@@ -42,7 +42,7 @@ const Navbar = ({ searchtitle, setSearchtitle }) => {
         <header className="bg-blue-600 py-4 pr-0 flex justify-between items-center">
           {/* Left side - Logo */}
           <div className="text-white font-bold text-2xl">
-            EdTech
+            Layers
           </div>
 
           {/* Middle - Search Bar */}

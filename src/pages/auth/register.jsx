@@ -64,7 +64,7 @@ const Register = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-blue-600 p-8 m-0 text-white">
-      <h1 className="text-white">Welcome to EdTech!</h1>
+      <h1 className="text-white">Welcome to Layers!</h1>
     <div className="flex flex-col items-center justify-center h-screen bg-blue-600 p-8 m-0 text-black">
 
       <div className="register-box">
