@@ -10,6 +10,8 @@ import CatergoriesPage from './pages/CatergoriesPage';
 import Register from './pages/auth/register';
 import MyCoursesPage from './pages/MyCoursesPage';
 import ProtectedRoute from './pages/auth/protectedroute'; // Import ProtectedRoute
+import PaymentPage from './pages/PaymentPage';
+import StudentsCoursesPage from './pages/StudentCourses';
 
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
       <Route path="/onboarding" element={<ProtectedRoute><Questionnaire /></ProtectedRoute>} />
       <Route path="/category/:categoryName" element={<ProtectedRoute><CatergoriesPage /></ProtectedRoute>} />
       <Route path="/mycourses" element={<ProtectedRoute><MyCoursesPage /></ProtectedRoute>} />
+      <Route path="/studentcourses" element={<StudentsCoursesPage />} />
+      <Route path="/payment" element={<PaymentPage />} />
     </Routes>
   );
 };
