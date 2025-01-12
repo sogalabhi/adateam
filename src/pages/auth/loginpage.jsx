@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginPage.css'; // Add a separate CSS file for styling
 import { createClient } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -31,11 +32,22 @@ const Login = () => {
       console.log('Login successful:', data);
       // Redirect user after login
       navigate('/');
-
     }
 
     setLoading(false);
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate('/login', { replace: true });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [navigate]);
 
   return (
     <div className="login-container">
