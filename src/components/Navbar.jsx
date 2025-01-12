@@ -6,7 +6,7 @@ const supabaseUrl = 'https://bcgvspkuazvdtmzaqyiw.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ3ZzcGt1YXp2ZHRtemFxeWl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1OTE5MDYsImV4cCI6MjA1MjE2NzkwNn0.WAcWP3VRdavS_in2IIaVFRvT-Lv7iDcFL3Aag__tUp4';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const Navbar = () => {
+const Navbar = ({ searchtitle, setSearchtitle }) => {
 
   const navigate = useNavigate();
   const [showSignOut, setShowSignOut] = useState(false);
@@ -49,8 +49,10 @@ const Navbar = () => {
           <div className="relative flex-1 mx-4">
             <input
               type="text"
-              placeholder="Search for videos, courses, etc."
-              className="w-500 p-2 pl-10 rounded-lg bg-white text-gray-800 border-2 border-blue-500 focus:outline-none"
+              value={searchtitle}
+              onChange={(e) => setSearchtitle(e.target.value)}
+              placeholder="Search for videos"
+              className="w-500 p-3 rounded-lg bg-white text-gray-800 border-2 border-blue-500 focus:outline-none"
             />
 
             <path
@@ -68,14 +70,12 @@ const Navbar = () => {
               <Link to="/createcourse" className="text-white font-medium hover:text-blue-300">Create new course</Link> : null
             }
             {(role === 'content_creator') ?
-              <Link to="/upload" className="text-white font-medium hover:text-blue-300">Upload</Link> : null
+              <Link to="/upload" className="text-white font-medium hover:text-blue-300">Upload new video</Link> : null
             }
             {(role === 'content_creator') ?
               <Link to="/mycourses" className="text-white font-medium hover:text-blue-300">My Courses</Link> : null
             }
-            {(role === 'student') ?
-              <Link to="/studentcourses" className="text-white font-medium hover:text-blue-300">My Courses</Link> : null
-            }
+            <Link to="/boughtcourses" className="text-white font-medium hover:text-blue-300">Bought Courses</Link>
 
             {/* Power Button with Dropdown for Sign Out */}
             <div className="relative">

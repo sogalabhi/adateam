@@ -7,8 +7,6 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const StudentsCoursesPage = () => {
-    const [selectedCourse, setSelectedCourse] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [course, setCourses] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [uidlist, setUidlist] = useState([]);
@@ -111,55 +109,6 @@ const StudentsCoursesPage = () => {
                     ))}
                 </tbody>
             </table>
-
-            {/* Modal for editing a course */}
-            {isModalOpen && selectedCourse && (
-                <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-4">Edit Course</h3>
-                        <form onSubmit={handleSubmit}>
-                            <input
-                                type="text"
-                                name="title"
-                                placeholder="Course Title"
-                                value={selectedCourse.title || ''}
-                                onChange={handleChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg mb-4"
-                                required
-                            />
-                            <textarea
-                                name="description"
-                                placeholder="Description"
-                                value={selectedCourse.description || ''}
-                                onChange={handleChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg mb-4"
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="price"
-                                placeholder="Price"
-                                value={selectedCourse.price || ''}
-                                onChange={handleChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg mb-4"
-                                required
-                            />
-                            <div className="flex justify-between mt-4">
-                                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-                                    Save
-                                </button>
-                                <button
-                                    type="button"
-                                    className="bg-gray-400 text-white px-4 py-2 rounded"
-                                    onClick={() => setIsModalOpen(false)}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
