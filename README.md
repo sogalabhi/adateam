@@ -4,6 +4,9 @@
 
 This project is an innovative EdTech platform that allows learners to pay only for the content they want to access. With a flexible pay-per-video structure, we offer learners a distraction-free environment to learn at their own pace, on their own terms. This platform integrates various technologies to provide an efficient and user-friendly learning experience.
 
+## VIdeo Demo
+https://youtu.be/SWbxouGQQDc
+
 ## Tech Stack
 
 - **Frontend**: React, Tailwind CSS
