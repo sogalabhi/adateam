@@ -6,7 +6,11 @@ import ReactPlayer from 'react-player';
 const VideoPlayer = () => {
   const location = useLocation();
   const { lesson } = location.state || {};
+  const navigate = useNavigate();
 
+  const handleClick = () => {
+    navigate('/author', { state: { uuid: lesson.uuid, name: lesson.author } });
+  };
   if (!lesson) {
     return <div className="text-center text-red-500 text-2xl font-bold mt-20">Video not found!</div>;
   }
@@ -15,7 +19,7 @@ const VideoPlayer = () => {
     <div className="m-0 bg-gray-100">
       {/* Header Section */}
       <div className="bg-blue-600 text-white py-4 px-6 flex items-center justify-between shadow-lg">
-        
+
         <h1 className="text-3xl font-bold">EdTech</h1>
       </div>
 
@@ -37,7 +41,7 @@ const VideoPlayer = () => {
           <div className="p-4 bg-white shadow-lg rounded-lg border border-gray-200">
             <h2 className="text-4xl  font-bold text-blue-600">{lesson.title}</h2>
             <p className="mt-4 text-lg text-gray-700">{lesson.description}</p>
-            <p className="mt-4 text-md font-semibold text-gray-900">By: {lesson.author || 'Unknown'}</p>
+            <p className="mt-4 text-md font-semibold text-gray-900 cursor-pointer" onClick={handleClick}>By: {lesson.author || 'Unknown'}</p>
           </div>
         </div>
 

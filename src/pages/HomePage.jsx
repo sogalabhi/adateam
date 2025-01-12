@@ -26,6 +26,7 @@ const HomePage = () => {
       console.error('Error fetching courses:', error);
     } else {
       setUidlist(data ? data.mycourses : []);
+      console.log(data.mycourses);
     }
   };
   const fetchLessons = async () => {
@@ -39,13 +40,14 @@ const HomePage = () => {
           arr.push(lesson);
         }
       });
+      console.log(arr);
       setLessons(arr);
     }
   };
   useEffect(() => {
     fetchLessons();
     fetchuidlist();
-  }, [lessons]);
+  }, []);
 
   const handleBuyNowClick = (lesson) => {
     // Navigate to payment route with the selected lesson data

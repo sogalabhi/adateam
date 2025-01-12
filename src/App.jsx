@@ -11,6 +11,7 @@ import Register from './pages/auth/register';
 import MyCoursesPage from './pages/MyCoursesPage';
 import PaymentPage from './pages/PaymentPage';
 import StudentsCoursesPage from './pages/StudentCourses';
+import AuthorCoursesPage from './pages/authorpage';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="/mycourses" element={<MyCoursesPage />} />
       <Route path="/studentcourses" element={<StudentsCoursesPage />} />
       <Route path="/payment" element={<PaymentPage />} />
+      <Route path="/author" element={<AuthorCoursesPage />} />
     </Routes>
 
   );
