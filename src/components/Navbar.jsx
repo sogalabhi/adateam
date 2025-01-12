@@ -28,8 +28,8 @@ const Navbar = () => {
 
   const handleSignOutClick = async () => {
 
-    navigate('/login');
     await supabase.auth.signOut();
+    window.location.replace('/login');
     setShowSignOut(!showSignOut);
   };
   const toggleDropdown = () => {
